@@ -212,7 +212,7 @@ class Client(BaseClient):
     def __init__(self, params: dict):
         self.api_key = params['credentials']['password']
         super().__init__(
-            'https://www.virustotal.com/api/v3/',
+            params['baseURL'],
             verify=not params.get('insecure'),
             proxy=params.get('proxy'),
             headers={

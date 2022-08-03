@@ -3,6 +3,11 @@ commonfields:
   id: VirusTotal - Private API
   version: -1
 configuration:
+- defaultvalue: https://www.virustotal.com/vtapi/v2/
+  display: Virus Total Hostname
+  name: baseURL
+  required: true
+  type: 0
 - display: Virus Total private API key
   name: APIKey
   required: true

@@ -97,7 +97,7 @@ class Client(BaseClient):
         self.is_premium = argToBoolean(params['is_premium_api'])
         self.reliability = DBotScoreReliability.get_dbot_score_reliability_from_str(params['feedReliability'])
         super().__init__(
-            'https://www.virustotal.com/api/v3/',
+            params['baseURL'],
             verify=not argToBoolean(params.get('insecure')),
             proxy=argToBoolean(params.get('proxy')),
             headers={

@@ -7,6 +7,11 @@ fromversion: 5.5.0
 category: Data Enrichment & Threat Intelligence
 description: Analyzes suspicious hashes, URLs, domains, and IP addresses.
 configuration:
+- defaultvalue: https://www.virustotal.com/vtapi/v3/
+  display: Virus Total Base API URL
+  name: baseURL
+  required: true
+  type: 0
 - display: API Key (leave empty. Fill in the API key in the password field.)
   displaypassword: API Key
   name: credentials

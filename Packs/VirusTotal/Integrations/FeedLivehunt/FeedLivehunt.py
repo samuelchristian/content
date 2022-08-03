@@ -252,6 +252,7 @@ def main():
     tlp_color = params.get('tlp_color')
     limit = int(params.get('limit', 10))
     filter_tag = params.get('filter')
+    base_url = params.get('baseURL')
 
     # If your Client class inherits from BaseClient, SSL verification is
     # handled out of the box by it, just pass ``verify_certificate`` to
@@ -268,7 +269,7 @@ def main():
 
     try:
         client = Client(
-            base_url='https://www.virustotal.com/api/v3/',
+            base_url=base_url,
             verify=insecure,
             proxy=proxy,
             headers={

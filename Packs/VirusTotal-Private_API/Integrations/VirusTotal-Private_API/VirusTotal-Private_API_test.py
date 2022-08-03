@@ -16,6 +16,7 @@ def load_test_data(json_path):
 
 def test_get_file_response_queued_response(mocker, requests_mock):
     mocker.patch.object(demisto, 'args', return_value={'resource': 'UID!'})
+    mocker.patch.object(demisto, 'params', return_value={'baseURL': 'https://www.virustotal.com/vtapi/v2/'})
     requests_mock.get('https://www.virustotal.com/vtapi/v2/file/report', json=queued_response)
     vt = importlib.import_module("VirusTotal-Private_API")
 
@@ -26,6 +27,7 @@ def test_get_file_response_queued_response(mocker, requests_mock):
 
 def test_get_url_multiple_results(mocker, requests_mock):
     mocker.patch.object(demisto, 'args', return_value={'resource': 'https://linkedin.com, https://twitter.com'})
+    mocker.patch.object(demisto, 'params', return_value={'baseURL': 'https://www.virustotal.com/vtapi/v2/URL'})
     requests_mock.get('https://www.virustotal.com/vtapi/v2/url/report',
                       [
                           {'json': load_test_data('./test_data/get_url_report_linkedin.json'), 'status_code': 200},
@@ -320,7 +322,10 @@ def test_empty_behavior_response(mocker):
     mocker.patch.object(vt, 'check_file_behaviour',
                         return_value={"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"})
     mocker.patch.object(demisto, 'args',
-                        return_value={'resource': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'})
+                        return_value={
+                            'resource': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                            'baseURL': 'https://www.virustotal.com/vtapi/v2/',
+                        })
 
     results = vt.check_file_behaviour_command()
 
@@ -344,7 +349,10 @@ def test_empty_hash_communication_response(mocker):
     mocker.patch.object(vt, 'check_file_behaviour',
                         return_value={"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"})
     mocker.patch.object(demisto, 'args',
-                        return_value={'hash': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'})
+                        return_value={
+                            'hash': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                        })
+    mocker.patch.object(demisto, 'params', return_value={'baseURL': 'https://www.virustotal.com/vtapi/v2/'})
 
     results = vt.hash_communication_command()
 
@@ -361,7 +369,14 @@ def test_get_url_report_invalid_url(mocker, requests_mock):
     Then:
         - Validate that a message indicating an invalid url was queried is returned in the md message.
     """
-    mocker.patch.object(demisto, 'args', return_value={'resource': 'hts://invalid_url.nfs.cv'})
+    mocker.patch.object(
+        demisto, 
+        'args', 
+        return_value={
+            'resource': 'hts://invalid_url.nfs.cv', 
+            'baseURL': 'https://www.virustotal.com/vtapi/v2/',
+        }
+    )
     requests_mock.get('https://www.virustotal.com/vtapi/v2/url/report',
                       [{'json': load_test_data('./test_data/get_url_report_invalid_url.json'),
                         'status_code': 200}])
