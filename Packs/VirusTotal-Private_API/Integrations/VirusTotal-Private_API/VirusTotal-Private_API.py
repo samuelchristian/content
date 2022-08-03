@@ -16,7 +16,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')  # pylint: disable=E1101
 
 ''' GLOBAL VARS '''
-SERVER_URL = 'https://www.virustotal.com/vtapi/v2/'
+SERVER_URL = demisto.params().get('baseURL')
 API_KEY = demisto.params().get('APIKey', '')
 
 USE_SSL = False if demisto.params().get('insecure') else True
@@ -1144,7 +1144,7 @@ def download_file(file_hash):
         'apikey': API_KEY
     }
 
-    response = requests.get('https://www.virustotal.com/vtapi/v2/file/download', params=params)
+    response = requests.get('{}file/download'.format(SERVER_URL), params=params)
 
     return response
 
